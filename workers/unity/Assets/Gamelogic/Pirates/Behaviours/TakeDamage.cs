@@ -13,6 +13,8 @@ namespace Assets.Gamelogic.Pirates.Behaviours
         {
             if (other != null && other.gameObject.tag == SimulationSettings.CannonballTag)
             {
+				// for now, just do some logging
+				Debug.LogWarning("Collision detected with " + gameObject.EntityId());
             }
         }
     }
