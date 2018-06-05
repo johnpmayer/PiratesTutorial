@@ -28,6 +28,7 @@ namespace Assets.Gamelogic.EntityTemplates
               .AddComponent(new ClientConnection.Data(SimulationSettings.TotalHeartbeatsBeforeTimeout), CommonRequirementSets.PhysicsOnly)
               .AddComponent(new ShipControls.Data(0, 0), CommonRequirementSets.SpecificClientOnly(clientWorkerId))
               .AddComponent(new ClientAuthorityCheck.Data(), CommonRequirementSets.SpecificClientOnly(clientWorkerId))
+			  .AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
               .Build();
 
             return playerEntityTemplate;
@@ -46,6 +47,7 @@ namespace Assets.Gamelogic.EntityTemplates
 				// movement components
 				.AddComponent(new Rotation.Data(initialRotation), CommonRequirementSets.PhysicsOnly)
 				.AddComponent(new ShipControls.Data(0, 0), CommonRequirementSets.PhysicsOnly)
+				.AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
 				// done
 				.Build();
 
