@@ -33,6 +33,25 @@ namespace Assets.Gamelogic.EntityTemplates
             return playerEntityTemplate;
         }
 
+		// pirate template
+		public static Entity CreatePirateEntityTemplate(Vector3 initialPosition, uint initialRotation)
+		{
+			var pirateEntityTemplate = EntityBuilder.Begin()
+				.AddPositionComponent(initialPosition, CommonRequirementSets.PhysicsOnly)
+				// unity prefab - to create the unity game object
+				.AddMetadataComponent(SimulationSettings.PirateShipPrefabName)
+				.SetPersistence(true)
+				// any worker, server (physics) or client (visual) can read
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				// movement components
+				.AddComponent(new Rotation.Data(initialRotation), CommonRequirementSets.PhysicsOnly)
+				.AddComponent(new ShipControls.Data(0, 0), CommonRequirementSets.PhysicsOnly)
+				// done
+				.Build();
+
+			return pirateEntityTemplate;
+		}
+
         // Defines the template for the PlayerCreator entity.
         public static Entity CreatePlayerCreatorTemplate()
         {
