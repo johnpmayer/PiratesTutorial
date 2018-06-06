@@ -1,6 +1,7 @@
 ﻿using Improbable.Core;
 using Improbable.Unity;
 using Improbable.Unity.Visualizer;
+using Improbable.Ship;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,9 @@ namespace Assets.Gamelogic.Pirates.Behaviours
         [Require]
         private ClientAuthorityCheck.Writer ClientAuthorityCheckWriter;
 
+		[Require]
+		private Score.Reader ScoreReader;
+
         private GameObject scoreCanvasUI;
         private Text totalPointsGUI;
 
@@ -32,12 +36,18 @@ namespace Assets.Gamelogic.Pirates.Behaviours
             }
         }
 
+		private void OnNumberOfPointsUpdated(int numberOfPoints) {
+			updateGUI (numberOfPoints);
+		}
+
         private void OnEnable()
         {
+			ScoreReader.NumberOfPointsUpdated.Add (OnNumberOfPointsUpdated);
         }
 
         private void OnDisable()
         {
+			ScoreReader.NumberOfPointsUpdated.Remove (OnNumberOfPointsUpdated);
         }
 
         void updateGUI(int score)

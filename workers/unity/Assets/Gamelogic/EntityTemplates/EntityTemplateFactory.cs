@@ -29,6 +29,7 @@ namespace Assets.Gamelogic.EntityTemplates
               .AddComponent(new ShipControls.Data(0, 0), CommonRequirementSets.SpecificClientOnly(clientWorkerId))
               .AddComponent(new ClientAuthorityCheck.Data(), CommonRequirementSets.SpecificClientOnly(clientWorkerId))
 			  .AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
+				.AddComponent(new Score.Data(0), CommonRequirementSets.PhysicsOnly)
               .Build();
 
             return playerEntityTemplate;

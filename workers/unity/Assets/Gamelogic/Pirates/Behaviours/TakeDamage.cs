@@ -3,6 +3,8 @@ using Improbable.Unity;
 using Improbable.Unity.Visualizer;
 using UnityEngine;
 using Improbable.Ship;
+using Improbable;
+using Improbable.Unity.Core;
 
 namespace Assets.Gamelogic.Pirates.Behaviours
 {
@@ -34,7 +36,34 @@ namespace Assets.Gamelogic.Pirates.Behaviours
 				// Debug.LogWarning("Collision detected with " + gameObject.EntityId());
 				int newHealth = HealthWriter.Data.currentHealth - 250;
 				HealthWriter.Send (new Health.Update ().SetCurrentHealth (newHealth));
+
+				// Notify firer
+				if (newHealth <= 0) {
+					var firerEntityId = other.GetComponent<Cannons.DestroyCannonball> ().firerEntityId.Value;
+					AwardPointsForKill (firerEntityId);
+				}
             }
         }
+
+		private void AwardPointsForKill(EntityId firerEntityId)
+		{
+			uint pointsToAward = 1;
+
+			SpatialOS.Commands.SendCommand (HealthWriter, Score.Commands.AwardPoints.Descriptor, 
+				new AwardPoints (pointsToAward), firerEntityId)
+				.OnSuccess (OnAwardPointsSuccess)
+				.OnFailure (OnAwardPointsFailure);
+		}
+
+		private void OnAwardPointsSuccess(AwardResponse response)
+		{
+			Debug.Log ("AwardPoints command succeeded. Points awarded: " + response.amount);
+		}
+
+		private void OnAwardPointsFailure(ICommandErrorDetails response)
+		{
+			Debug.LogError ("Failed to send AwardPoints command with error: " + response.ErrorMessage);
+		}
+
     }
 }
